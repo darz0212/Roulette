@@ -10,7 +10,7 @@ namespace RouletteApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class User : Controller
+    public class UserRouletteController : Controller
     {
         private UserRouletteCollection db = new UserRouletteCollection();
 
@@ -38,7 +38,7 @@ namespace RouletteApi.Controllers
 
             db.InsertUsers(user);
 
-            return Created("Created", true);
+            return Created("Created", user);
         }
 
         [HttpPut("{id}")]
@@ -49,7 +49,7 @@ namespace RouletteApi.Controllers
 
             db.UpdateUsers(user, id);
 
-            return Created("Created", true);
+            return Created("Created", user);
         }
     }
 }

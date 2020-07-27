@@ -16,15 +16,20 @@ namespace RouletteApi.Repositories
             collection = _repository.db.GetCollection<Roulette>("Roulettes");
         }
 
-        public List<Roulette> GetAllRoulettes()
-        { 
+        public List<Roulette> GetAllRoulettes(bool isActive = false)
+        {
+            if (isActive)
+                return collection.Find(x => x.state != "close").ToList();
+
             return collection.Find(new BsonDocument()).ToList();
         }
 
-        public  Roulette GetRouletteById(string id)
+        public  Roulette GetRouletteById(string id, bool isActive = false)
         {
-            var result = collection.Find(x=> x.id == id).FirstOrDefault();
-            return result;
+            if(isActive)
+                return collection.Find(x => x.id == id && x.state != "close").FirstOrDefault();
+
+            return collection.Find(x => x.id == id).FirstOrDefault();
         }
 
         public string InsertRoulette(Roulette roulette)

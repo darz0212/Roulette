@@ -16,8 +16,11 @@ namespace RouletteApi.Repositories
             collection = _repository.db.GetCollection<Bet>("Bet");
         }
 
-        public List<Bet> GetAllBets()
+        public List<Bet> GetAllBets(string idRoulette = null)
         {
+            if (!string.IsNullOrEmpty(idRoulette))
+                return collection.Find(x => x.idRoulette == idRoulette).ToList();
+
             return collection.Find(new BsonDocument()).ToList();
         }
 
@@ -39,6 +42,12 @@ namespace RouletteApi.Repositories
             bet.id = id;
             collection.ReplaceOne(filter, bet);
             return bet.id;
+        }
+
+        public void DeleteBet(string id)
+        {
+            var filter = Builders<Bet>.Filter.Eq(x => x.id, id);
+            collection.DeleteOne(filter);
         }
     }
 }
