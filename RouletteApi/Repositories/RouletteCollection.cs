@@ -1,14 +1,12 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using RouletteApi.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace RouletteApi.Repositories
 {
-    public class RouletteCollection : IRouletteCollection
+    public class RouletteCollection
     {
         internal MongoDBRepository _repository = new MongoDBRepository();
         private IMongoCollection<Roulette> collection;
@@ -18,26 +16,29 @@ namespace RouletteApi.Repositories
             collection = _repository.db.GetCollection<Roulette>("Roulettes");
         }
 
-        public async Task<List<Roulette>> GetAllRoulettes()
-        {
-            return await collection.FindAsync(new BsonDocument()).Result.ToListAsync();
+        public List<Roulette> GetAllRoulettes()
+        { 
+            return collection.Find(new BsonDocument()).ToList();
         }
 
-        public async Task<Roulette> GetRouletteById(string id)
+        public  Roulette GetRouletteById(string id)
         {
-            return await collection.FindAsync(new BsonDocument { { "id", new ObjectId(id)} }).Result.FirstAsync();
+            var result = collection.Find(x=> x.id == id).FirstOrDefault();
+            return result;
         }
 
-        public async Task InsertRoulette(Roulette roulette)
+        public string InsertRoulette(Roulette roulette)
         {
-            await collection.InsertOneAsync(roulette);
+            collection.InsertOne(roulette);
+            return roulette.id;
         }
 
-        public async Task UpdateRoulette(Roulette roulette, string id)
+        public string UpdateRoulette(Roulette roulette, string id)
         {
-            var filter = Builders<Roulette>.Filter.Eq(x => x.id, roulette.id);
+            var filter = Builders<Roulette>.Filter.Eq(x => x.id, id);
             roulette.id = id;
-            await collection.ReplaceOneAsync(filter, roulette);
+            collection.ReplaceOne(filter, roulette);
+            return roulette.id;
         }
     }
 }

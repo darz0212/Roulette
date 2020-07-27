@@ -3,10 +3,11 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace RouletteApi.Models
 {
-    public class User
+    public class UserRoulette
     {
         [BsonId]
-        public ObjectId id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
         public string name { get; set; }
         public int credit { get; set; }
     }
