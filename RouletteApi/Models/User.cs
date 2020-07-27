@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace RouletteApi.Models
 {
     public class User
     {
-        public int idUser { get; set; }
+        [BsonId]
+        public ObjectId id { get; set; }
         public string name { get; set; }
         public int credit { get; set; }
     }

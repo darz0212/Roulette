@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
+    <None Remove="Properties\launchSettings.json~RF36edf256.TMP" />
   </ItemGroup>
 
   <ItemGroup>
